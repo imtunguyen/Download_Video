@@ -1,0 +1,34 @@
+<div class="cover">
+    <div class="container py-5">
+        <h1>TẢI VIDEO YOUTUBE, FACEBOOK BẰNG URL</h1><br>
+
+        <form id="download-form" action="/download" method="post">
+            <input 
+                id="video-url-input"
+                type="text"
+                name="video_url"
+                class="form-control"
+                placeholder="Nhập URL video"
+            />
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Tải video</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById('download-form').addEventListener('submit', function(event) {
+        var videoUrlInput = document.getElementById('video-url-input');
+        if (!videoUrlInput.value.trim()) {
+            event.preventDefault(); 
+            alert('Vui lòng nhập URL video vào ô input.');
+        }
+    });
+
+    document.getElementById('video-url-input').addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            document.getElementById('download-form').submit();
+        }
+    });
+</script>

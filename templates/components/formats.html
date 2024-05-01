@@ -1,0 +1,29 @@
+<div class="container text-center mt-5">
+  <h2>{{ title }}</h2>
+  <div class="thumbnail-formats">
+    <img src="{{ thumbnail or 'https://www.fing.edu.uy/inco/grupos/gsi/img/placeholder.png' }}" alt="Thumbnail" class="thumbnail" />
+    <div class="btn-group">
+      <button class="btn btn-primary btn-lg dropdown-toggle" type="button" data-mdb-dropdown-init data-mdb-ripple-init aria-expanded="false" onclick="toggleDropdown()">
+        Tải Video
+      </button>
+      <ul class="dropdown-menu" id="dropdownMenu"><!-- Remove whitespace and line breaks here -->
+        {% for format in formats %}
+          {% if format.extension == "mp3" or format.extension == "mp4" or format.format_name == "bestvideo+bestaudio" %}
+            <li><a class="dropdown-item" href="{{ format.url }}" onclick="downloadSelectedFormat('{{ format.url }}')">{{ format.format_name }}</a></li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleDropdown() {
+    var dropdownMenu = document.getElementById("dropdownMenu");
+    dropdownMenu.classList.toggle("show");
+  }
+
+  function downloadSelectedFormat(url) {
+    window.open(url, "_blank");
+  }
+</script>
