@@ -14,6 +14,8 @@
 ⬇️ Select Download Format: Users have the option to choose between MP3 and MP4 formats for downloading the videos.
 
 ## ⚙️ Installation 
+1. Clone the repository:
+
  ```bash
    git clone https://github.com/imtunguyen/Download_Video
 2. Navigate to the project directory:
