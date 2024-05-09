@@ -1,0 +1,97 @@
+<div class="container mt-3">
+    <h1>Download YouTube Video</h1>
+    <form id="searchForm">
+        {% if message %}
+        <div class="alert alert-success">{{ message }}</div>
+        {% endif %}
+        <div class="input-group mb-3">
+            <input type="text" id="searchInput" name="search_input" class="form-control" placeholder="Enter YouTube Video URL or Search Content">
+            <button type="button" class="btn btn-primary" id="searchButton">Search</button>
+        </div>
+    
+        <div id="searchResults"></div>
+       
+    </form>
+</div>
+<br><br>
+<script>
+function searchVideo() {
+    let searchInput = document.getElementById('searchInput').value;
+    fetch('/search', {
+        method: 'POST',
+        body: new URLSearchParams({
+            'video_url': searchInput
+        }),
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    }).then(response => response.json())
+    .then(data => {
+        let searchResultsDiv = document.getElementById('searchResults');
+        searchResultsDiv.innerHTML = '<h1>Search Results</h1><ul>';
+        data.videos.forEach(video => {
+            searchResultsDiv.innerHTML += `<li>
+                <div class="row">
+                    <div class="col-2">
+                        <img src="${video.thumbnail}" alt="${video.title}" height="100px">
+                    </div>
+                    <div class="col-10">
+                        <a href="https://www.youtube.com/watch?v=${video.video_id}">${video.title}</a>
+                        <div class="row">
+                            <div class="col-4">
+                                <label for="download_format_${video.video_id}"></label>
+                                <select id="download_format_${video.video_id}" name="download_format">
+                                    <option class="dropdown-item" value="mp3">MP3</option>
+                                    <option class="dropdown-item" value="mp4">MP4</option>
+                                    <option class="dropdown-item" value="webm">WebM</option>
+                                    <option class="dropdown-item" value="ogg">OGG</option>
+                                    <option class="dropdown-item" value="wav">WAV</option>
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                <button class="btn btn-primary downloadBtn" data-video-id="${video.video_id}" data-video-title="${video.title}">Download</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>`;
+        });
+        searchResultsDiv.innerHTML += '</ul>';
+
+        document.querySelectorAll('.downloadBtn').forEach(button => {
+            button.addEventListener('click', function() {
+                let videoId = this.getAttribute('data-video-id');
+                let videoUrl = 'https://www.youtube.com/watch?v=' + videoId;
+                let selectedFormat = document.getElementById(`download_format_${videoId}`).value;
+
+                fetch('/download', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        video_url: videoUrl,
+                        format: selectedFormat
+                    })
+                }).then(response => response.json())
+                .then(data => {
+                    if (data.errorType === 0) {
+                        document.getElementById('downloadMessage').innerText = data.message;
+                    } else {
+                        alert(data.message);
+                    }
+                });
+            });
+        });
+    });
+}
+
+document.getElementById('searchInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        searchVideo();
+    }
+});
+document.getElementById('searchButton').addEventListener('click', function() {
+    searchVideo();
+});
+</script>
