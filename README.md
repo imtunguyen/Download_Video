@@ -1,5 +1,6 @@
 # Download Videos
-![image](https://github.com/imtunguyen/Download_Video/assets/144786595/c27a8780-99dd-4880-b9e2-7888ac4934a3)
+![image](https://github.com/imtunguyen/Download_Video/assets/144786595/3c189ef2-e7ef-4f3b-aea6-4c0ad95be777)
+
 
 
 ### This project aims to simplify the process of downloading videos from YouTube by providing a user-friendly interface for users to input video URLs and choose their desired download format (MP3 or MP4). It leverages the YouTube API to fetch video metadata and utilizes Flask, a Python web framework, to host a web application that handles the download process.
