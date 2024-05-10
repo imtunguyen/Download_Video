@@ -1,8 +1,11 @@
 <div class="container mt-3">
-    <h1>Download YouTube Video</h1>
+    <h1>YouTube Downloaded App</h1>
     <form id="searchForm">
         {% if message %}
-        <div class="alert alert-success">{{ message }}</div>
+            <div class="alert alert-success">{{ message }}</div>
+            {% if message and errorType == '1' %}
+                <div class="alert alert-danger"><p>{{ message }}</p></div>
+            {% endif %}
         {% endif %}
         <div class="input-group mb-3">
             <input type="text" id="searchInput" name="search_input" class="form-control" placeholder="Enter YouTube Video URL or Search Content">

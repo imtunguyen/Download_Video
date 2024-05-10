@@ -2,8 +2,11 @@ from flask import Flask, request, render_template, jsonify
 import yt_dlp
 import logging
 from googleapiclient.discovery import build
+from facebook_business.adobjects.advideo import AdVideo
+from facebook_business.api import FacebookAdsApi
 app = Flask(__name__)
 api_key = 'AIzaSyBB-qktCLrl641YJLW0COkzCwqSrtMXN-s'
+access_token ='1512958009564697|unYBxLdFJDKk4x6C7TTW2Hb0JLw'
 
 logging.basicConfig(filename='app.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -11,6 +14,9 @@ logging.basicConfig(filename='app.log', level=logging.INFO, format='%(asctime)s 
 def home():
     return render_template("index.html")
 
+@app.route("/orther")
+def order():
+    return render_template("orther.html")
 def search_video(video_url):
     videos = []
     youtube = build('youtube', 'v3', developerKey=api_key)
@@ -78,5 +84,11 @@ def download():
     message, errorType = download_video(video_url, download_format)
     return jsonify({'message': message, 'errorType': errorType})
 
+@app.route("/downloadOther", methods=["POST"])
+def download_orther():
+    video_url = request.form.get('video_url', '')
+    download_format = request.form.get('download_format', '')
+    message, errorType = download_video(video_url, download_format)
+    return render_template('orther.html', message=message, errorType=errorType)
 if __name__ == "__main__":
     app.run(debug=True)

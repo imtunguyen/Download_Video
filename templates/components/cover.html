@@ -1,0 +1,51 @@
+<div class="container mt-3">
+    <h1>Download other videos</h1>
+    <form method="POST" action="/downloadOther">
+        {% if message %}
+            <div class="alert alert-success">{{ message }}</div>
+            {% if message and errorType == '1' %}
+                <div class="alert alert-danger"><p>{{ message }}</p></div>
+            {% endif %}
+        {% endif %}
+        
+        <div class="form-outline" data-mdb-input-init>
+            <input type="text" id="video_url" name="video_url" class="form-control" ><br><br>
+            <label class="form-label" for="video_url">Enter Video URL</label>
+        </div>
+        <br><br>
+        
+        <label for="download_format">Select Download Format:</label><br>
+        <select id="download_format" name="download_format">
+            <option class="dropdown-item" value="mp3">MP3</option>
+            <option class="dropdown-item" value="mp4">MP4</option>
+            <option class="dropdown-item" value="webm">WebM</option>
+            <option class="dropdown-item" value="ogg">OGG</option>
+            <option class="dropdown-item" value="wav">WAV</option>
+        </select><br><br>
+        
+        <button type="submit" class="btn btn-primary">Download</button>
+    </form>
+    
+    <br><br>
+    
+    <ul>
+        {% for video in videos %}
+        <li>
+            <img src="{{ video.thumbnail }}" alt="{{ video.title }}">
+            <a href="https://www.youtube.com/watch?v={{ video.video_id }}">{{ video.title }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<script>
+
+    function extractVideoID(url) {
+        var videoID = url.split('v=')[1];
+        var ampersandPosition = videoID.indexOf('&');
+        if (ampersandPosition !== -1) {
+            videoID = videoID.substring(0, ampersandPosition);
+        }
+        return videoID;
+    }
+</script>
